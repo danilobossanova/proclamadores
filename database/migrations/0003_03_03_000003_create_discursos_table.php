@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('discursos', function (Blueprint $table) {
+            $table->id();
+            $table->integer('numero')->unique();
+            $table->string('tema', 500);
+            $table->enum('situacao', ['Disponivel', 'Indisponivel','Viajante'])->default('Disponivel');
+            $table->boolean('novo')->default(false);
+            $table->string('versao', 7)->nullable(); // mes/ano: 01/2024
+            $table->date('ultimo_proferimento')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('numero');
+            $table->index('versao');
+            $table->index('tema');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('discursos');
+    }
+};
