@@ -3,16 +3,98 @@
         <!-- Cabeçalho com busca e botão -->
         <div class="px-4 py-6 sm:px-0">
             <!-- Painel de filtros -->
-            <livewire:componentes.filtro-painel
-                titulo="Nova Congregação"
-                rotaNovo="{{ route('congregacoes.create') }}"
-                :filters="['filterDia' => 'Selecione o dia...', 'filterHorario' => 'Selecione o horário...']"
-                :searchFields="['congregacao', 'responsavel', 'telefone']"
-                :queryModel="App\Models\Congregacao"
-            />
+
+            <div>
+                <!-- Botões de Ação -->
+                <div class="flex justify-between items-center mb-4">
+                    <!-- Botão Novo -->
+                    <a href="{{ route('congregacoes.create') }}"
+                       class="flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-blue-700 transition duration-200">
+                        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Nova Congregação
+                    </a>
+
+                    <div class="flex space-x-4">
+                        <!-- Botão "Filtros Avançados" -->
+                        <button wire:click="toggleFilters"
+                                class="flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-gray-700 transition duration-200">
+                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M15 12A3 3 0 119 12a3 3 0 016 0zm6 0c0 4.418-7 8-7 8s-7-3.582-7-8 7-8 7-8 7 3.582 7 8z"/>
+                            </svg>
+                            Filtros Avançados
+                        </button>
+
+                        <!-- Botão "Exportar" -->
+                        <button wire:click="exportar"
+                                class="flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-green-700 transition duration-200">
+                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v12m-4-4l4 4m0 0l4-4"/>
+                            </svg>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Painel de Filtros -->
+                <div x-data="{ showFilters: @entangle('showFilters') }">
+                    <div x-show="showFilters"
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 transform scale-95"
+                         x-transition:enter-end="opacity-100 transform scale-100"
+                         x-transition:leave="transition ease-in duration-200"
+                         x-transition:leave-start="opacity-100 transform scale-100"
+                         x-transition:leave-end="opacity-0 transform scale-95"
+                         x-cloak
+                         class="mb-6 bg-gray-800 shadow-sm rounded-lg p-4">
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                            <!-- Campo de Busca -->
+                            <div class="flex-1 min-w-[250px]">
+                                <div class="relative">
+                                    <input wire:model.debounce.500ms="search" type="search"
+                                           class="w-full pl-8 pr-3 py-2 text-sm rounded-md border-gray-600 focus:ring-blue-500 bg-gray-900 text-black placeholder-gray-400"
+                                           placeholder="Buscar...">
+                                </div>
+                            </div>
+
+                            <!-- Filtros Específicos -->
+                            <div class="min-w-[180px]">
+                                <select wire:model.live="filterDia"
+                                        class="w-full px-3 py-2 text-sm rounded-md border-gray-600 focus:ring-blue-500 bg-gray-900 text-black">
+                                    <option value="">Selecione o dia...</option>
+                                    <option value="Sábado">Sábado</option>
+                                    <option value="Domingo">Domingo</option>
+                                </select>
+                            </div>
+
+                            <div class="min-w-[180px]">
+                                <select wire:model.live="filterHorario"
+                                        class="w-full px-3 py-2 text-sm rounded-md border-gray-600 focus:ring-blue-500 bg-gray-900 text-black">
+                                    <option value="">Selecione o período...</option>
+                                    <option value="manha">Manhã</option>
+                                    <option value="tarde">Tarde</option>
+                                    <option value="noite">Noite</option>
+                                </select>
+                            </div>
+
+                            <!-- Limpar -->
+                            <div class="ml-auto">
+                                <button wire:click="limparFiltros"
+                                        class="px-3 py-2 text-sm text-gray-400 hover:text-gray-200">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
-
+            </div>
             <!-- /Botao Novo -->
 
             <!-- Tabela -->
