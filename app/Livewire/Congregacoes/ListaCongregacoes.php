@@ -19,6 +19,9 @@ class ListaCongregacoes extends Component
     public $filterDia = '';
     public $filterHorario = '';
 
+    public $perPage = 10;
+
+
 
     public function toggleFilters()
     {
@@ -44,7 +47,7 @@ class ListaCongregacoes extends Component
         $query = Congregacao::query();
 
         if ($this->search) {
-            $query->where('congregacao', 'like', "%{$this->search}%");
+            $query->when($this->search, fn($q) => $q->where('congregacao', 'like', "%{$this->search}%"));
         }
 
         if ($this->filterDia) {
@@ -63,7 +66,7 @@ class ListaCongregacoes extends Component
             });
         }
 
-        $congregacoes = $query->paginate(10);
+        $congregacoes = $query->paginate($this->perPage);
 
 
 
@@ -78,6 +81,11 @@ class ListaCongregacoes extends Component
 
     public function deletar()
     {
+        if (!$this->congregacaoToDelete) {
+            session()->flash('error', 'Nenhuma congregação selecionada para exclusão.');
+            return;
+        }
+
         $this->congregacaoToDelete->delete();
         $this->confirmingDelete = false;
         session()->flash('message', 'Congregação excluída com sucesso.');
@@ -88,21 +96,41 @@ class ListaCongregacoes extends Component
     {
         $congregacoes = Congregacao::all();
 
-        // Criar a string de conteúdo no formato CSV
-        $txt = "Nome,Responsavel,Telefone,Dia,Horario,Endereco\n";
+        $csvHeader = ["Nome", "Responsável", "Telefone", "Dia", "Horário", "Endereço"];
+        $csvData = $congregacoes->map(fn($c) => [
+            $c->congregacao,
+            $c->responsavel,
+            $c->telefone,
+            $c->dia_reuniao_fds,
+            $c->hora_reuniao,
+            $c->endereco
+        ]);
 
-        foreach ($congregacoes as $congregacao) {
-            $linha = "{$congregacao->congregacao},{$congregacao->responsavel},{$congregacao->telefone},";
-            $linha .= "{$congregacao->dia_reuniao_fds},{$congregacao->hora_reuniao},{$congregacao->endereco}\n";
-            $txt .= $linha;
-        }
+        $fileName = 'congregacoes_' . now()->format('Y-m-d_His') . '.csv';
 
-        // Retornar um arquivo .txt para download
-        return response()->streamDownload(function () use ($txt) {
-            echo $txt;
-        }, 'congregacoes.txt');
+        return response()->streamDownload(function () use ($csvHeader, $csvData) {
+            $output = fopen('php://output', 'w');
+            fputcsv($output, $csvHeader); // Cabeçalho do CSV
+
+            foreach ($csvData as $row) {
+                fputcsv($output, $row);
+            }
+
+            fclose($output);
+        }, $fileName);
     }
 
+    public function restaurar($id)
+    {
+        $congregacao = Congregacao::withTrashed()->find($id);
+
+        if ($congregacao && $congregacao->trashed()) {
+            $congregacao->restore();
+            session()->flash('message', 'Congregação restaurada com sucesso.');
+        } else {
+            session()->flash('error', 'Congregação não encontrada ou já restaurada.');
+        }
+    }
 
 
 }
