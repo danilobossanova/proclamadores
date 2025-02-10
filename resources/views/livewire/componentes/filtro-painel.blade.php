@@ -1,88 +1,64 @@
 <div>
-    <!-- Botões de Ação -->
-    <div class="flex justify-between items-center mb-4">
-        <!-- Botão Novo -->
-        <a href="{{ $rotaNovo }}"
-           class="flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-blue-700 transition duration-200">
-            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+
+
+    <div class="flex items-center bg-gray-900 border border-gray-700 rounded-md p-1 space-x-1 shadow-sm text-white">
+        <!-- Botão Home -->
+        <button class="p-1 bg-gray-800 hover:bg-gray-700 rounded-md">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0 1 12 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5" />
             </svg>
-            {{ $titulo }}
-        </a>
+        </button>
 
-        <div class="flex space-x-4">
-            <!-- Botão "Filtros Avançados" -->
-            <button wire:click="toggleFilters"
-                    class="flex items-center px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-gray-700 transition duration-200">
-                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M15 12A3 3 0 119 12a3 3 0 016 0zm6 0c0 4.418-7 8-7 8s-7-3.582-7-8 7-8 7-8 7 3.582 7 8z"/>
+        <!-- Botão Filtros -->
+        <button class="p-1 bg-gray-800 hover:bg-gray-700 rounded-md">
+            <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M9 21V7M15 21V7"/>
+            </svg>
+        </button>
+
+        <!-- Botão Adicionar -->
+        <button class="p-1 bg-green-500 hover:bg-green-600 text-white rounded-md">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+
+        </button>
+
+        <!-- Botões de Paginação -->
+        <div class="flex space-x-1">
+            <button class="p-1 bg-gray-800 hover:bg-gray-700 rounded-md">
+                <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7"/>
                 </svg>
-                Filtros Avançados
             </button>
-
-            <!-- Botão "Exportar" -->
-            <button wire:click="exportar"
-                    class="flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-green-700 transition duration-200">
-                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v12m-4-4l4 4m0 0l4-4"/>
+            <button class="p-1 bg-gray-800 hover:bg-gray-700 rounded-md">
+                <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l7-7-7-7"/>
                 </svg>
-                Exportar
             </button>
         </div>
-    </div>
 
-    <!-- Painel de Filtros -->
-    <div x-data="{ showFilters: @entangle('showFilters') }">
-        <div x-show="showFilters"
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0 transform scale-95"
-             x-transition:enter-end="opacity-100 transform scale-100"
-             x-transition:leave="transition ease-in duration-200"
-             x-transition:leave-start="opacity-100 transform scale-100"
-             x-transition:leave-end="opacity-0 transform scale-95"
-             x-cloak
-             class="mb-6 bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4">
-            <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-                <!-- Campo de Busca -->
-                <div class="flex-1 min-w-[250px]">
-                    <div class="relative">
-                        <input wire:model.debounce.500ms="search" type="search"
-                               class="w-full pl-8 pr-3 py-2 text-sm rounded-md border-gray-300 focus:ring-blue-500"
-                               placeholder="Buscar...">
-                    </div>
-                </div>
+        <!-- Botão Excluir -->
+        <button class="p-1 bg-red-500 hover:bg-red-600 text-white rounded-md">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
 
-                @foreach($filters as $key => $placeholder)
-                    <div class="min-w-[180px]">
-                        <input wire:model.live="filters.{{ $key }}" type="text"
-                               class="w-full px-3 py-2 text-sm rounded-md border-gray-300 focus:ring-blue-500"
-                               placeholder="{{ $placeholder }}">
-                    </div>
-                @endforeach
+        <!-- Botão Atualizar -->
+        <button class="p-1 bg-gray-800 hover:bg-gray-700 rounded-md">
+            <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v6h6M20 20v-6h-6"/>
+            </svg>
+        </button>
 
-                <!-- Limpar -->
-                <div class="ml-auto">
-                    <button wire:click="limparFiltros"
-                            class="px-3 py-2 text-sm text-gray-600 hover:text-gray-800">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+        <!-- Campo de Pesquisa -->
+        <div class="flex items-center border border-gray-600 rounded-md px-2 py-1 w-48 bg-gray-800">
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 18l6-6m0 0l-6-6"/>
+            </svg>
+            <input type="text" placeholder="Pesquisar registros..."
+                   class="w-full bg-transparent outline-none text-sm px-2 text-white placeholder-gray-400">
         </div>
-    </div>
-
-    <!-- Exibição dos Resultados da Pesquisa -->
-    <div>
-        <ul>
-            @foreach($resultados as $item)
-                <li class="p-2 border-b border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100">
-                    {{ $item->congregacao ?? $item->nome ?? 'Registro' }}
-                </li>
-            @endforeach
-        </ul>
     </div>
 </div>
