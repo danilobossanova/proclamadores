@@ -47,7 +47,7 @@ class ListaCongregacoes extends Component
         $query = Congregacao::query();
 
         if ($this->search) {
-            $query->when($this->search, fn($q) => $q->where('congregacao', 'like', "%{$this->search}%"));
+            $query->when($this->search, fn($q) => $q->where('congregacao', 'ILIKE', "%{$this->search}%"));
         }
 
         if ($this->filterDia) {
