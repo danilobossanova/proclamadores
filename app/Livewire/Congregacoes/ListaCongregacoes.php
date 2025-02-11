@@ -21,6 +21,9 @@ class ListaCongregacoes extends Component
 
     public $perPage = 10;
 
+    public $mostrarDeletados = false;
+
+
 
 
     public function toggleFilters()
@@ -43,27 +46,35 @@ class ListaCongregacoes extends Component
     public function render()
     {
 
-
+        // Inicia a query
         $query = Congregacao::query();
 
-        if ($this->search) {
-            $query->when($this->search, fn($q) => $q->where('congregacao', 'ILIKE', "%{$this->search}%"));
+        if ($this->mostrarDeletados) {
+            $query->onlyTrashed(); // Mostra apenas os deletados
         }
 
-        if ($this->filterDia) {
+
+        // Aplica a busca pelo nome da congregação (insensível a maiúsculas e minúsculas)
+        if (!empty($this->search)) {
+            $query->whereRaw("LOWER(congregacao) LIKE LOWER(?)", ["%{$this->search}%"]);
+        }
+
+        // Filtro pelo dia de reunião
+        if (!empty($this->filterDia)) {
             $query->where('dia_reuniao_fds', $this->filterDia);
         }
 
-        if ($this->filterHorario) {
-            $query->when($this->filterHorario === 'manha', function($q) {
-                $q->whereTime('hora_reuniao', '>=', '06:00:00')
-                    ->whereTime('hora_reuniao', '<=', '11:59:59');
-            })->when($this->filterHorario === 'tarde', function($q) {
-                $q->whereTime('hora_reuniao', '>=', '12:00:00')
-                    ->whereTime('hora_reuniao', '<=', '17:59:59');
-            })->when($this->filterHorario === 'noite', function($q) {
-                $q->whereTime('hora_reuniao', '>=', '18:00:00');
-            });
+        // Filtro por horário da reunião
+        if (!empty($this->filterHorario)) {
+            $query->when($this->filterHorario === 'manha', fn($q) =>
+            $q->whereTime('hora_reuniao', '>=', '06:00:00')->whereTime('hora_reuniao', '<=', '11:59:59')
+            )
+                ->when($this->filterHorario === 'tarde', fn($q) =>
+                $q->whereTime('hora_reuniao', '>=', '12:00:00')->whereTime('hora_reuniao', '<=', '17:59:59')
+                )
+                ->when($this->filterHorario === 'noite', fn($q) =>
+                $q->whereTime('hora_reuniao', '>=', '18:00:00')
+                );
         }
 
         $congregacoes = $query->paginate($this->perPage);
@@ -96,7 +107,7 @@ class ListaCongregacoes extends Component
     {
         $congregacoes = Congregacao::all();
 
-        $csvHeader = ["Nome", "Responsável", "Telefone", "Dia", "Horário", "Endereço"];
+        $csvHeader = ["congregacao", "Responsável", "Telefone", "Dia", "Horário", "Endereço"];
         $csvData = $congregacoes->map(fn($c) => [
             $c->congregacao,
             $c->responsavel,
