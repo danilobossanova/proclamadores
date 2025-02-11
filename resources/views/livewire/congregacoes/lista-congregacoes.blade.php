@@ -35,6 +35,16 @@
                             </svg>
                             Exportar
                         </button>
+
+                        <!-- Botao Mostrar itens deletados  -->
+                        <button wire:click="$toggle('mostrarDeletados')"
+                                class="flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg shadow-md hover:bg-green-700 transition duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                                <path d="M13 2.75v7.775L4.475 2h7.775a.75.75 0 0 1 .75.75ZM3 13.25V5.475l4.793 4.793L4.28 13.78A.75.75 0 0 1 3 13.25ZM2.22 2.22a.75.75 0 0 1 1.06 0l10.5 10.5a.75.75 0 1 1-1.06 1.06L2.22 3.28a.75.75 0 0 1 0-1.06Z" />
+                            </svg>
+                            {{ $mostrarDeletados ? 'Voltar para Ativos' : 'Mostrar Deletados' }}
+                        </button>
+
                     </div>
                 </div>
 
@@ -95,72 +105,95 @@
 
 
             </div>
-            <!-- /Botao Novo -->
+            <div class="flex justify-between mb-4">
+                <!-- Botão de alternância -->
+
+            </div>
 
             <!-- Tabela -->
-            <div class="bg-white dark:bg-gray-800 shadow-xl rounded-lg overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead class="bg-gray-50 dark:bg-gray-700">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Congregação</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Responsável</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Telefone</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Dia/Horário</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Endereço</th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Ações</th>
-                    </tr>
-                    </thead>
-                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                    @foreach($congregacoes as $congregacao)
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ $congregacao->congregacao }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900 dark:text-gray-100">{{ $congregacao->responsavel }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900 dark:text-gray-100">{{ $congregacao->telefone }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900 dark:text-gray-100">
-                                    {{ $congregacao->dia_reuniao_fds }} - {{ $congregacao->hora_reuniao }}
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900 dark:text-gray-100">{{ $congregacao->endereco }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                <div class="flex justify-center space-x-3">
-                                    <a href="{{ $congregacao->googlemaps }}" target="_blank" class="text-blue-600 hover:text-blue-900" title="Ver no Google Maps">
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
-                                        </svg>
-                                    </a>
-
-                                    <a href="{{ route('congregacoes.edit', $congregacao) }}" class="text-indigo-600 hover:text-indigo-900" title="Editar">
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                        </svg>
-                                    </a>
-
-                                    <button wire:click="confirmarDelete({{ $congregacao->id }})" class="text-red-600 hover:text-red-900" title="Excluir">
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
+            <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+                <!-- Tabela -->
+                <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+                    <table class="w-full divide-y divide-gray-300">
+                        <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-sm font-semibold">Congregação</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold">Responsável</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold">Telefone</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold">Dia/Horário</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold">Endereço</th>
+                            <th class="px-6 py-3 text-center text-sm font-semibold">Ações</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach($congregacoes as $congregacao)
+                            <tr class="hover:bg-gray-50 transition duration-200">
+                                <td class="px-6 py-3 text-sm text-gray-800">{{ $congregacao->congregacao }}</td>
+                                <td class="px-6 py-3 text-sm text-gray-800">{{ $congregacao->responsavel }}</td>
+                                <td class="px-6 py-3 text-sm text-gray-800">{{ $congregacao->telefone }}</td>
+                                <td class="px-6 py-3 text-sm text-gray-800">{{ $congregacao->dia_reuniao_fds }} - {{ $congregacao->hora_reuniao }}</td>
+                                <td class="px-6 py-3 text-sm text-gray-800">{{ $congregacao->endereco }}</td>
+                                <td class="px-6 py-3 text-center">
 
-                <!-- Paginação -->
-                <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
-                    {{ $congregacoes->links() }}
+                                    <div class="flex justify-center space-x-4">
+                                        @if($mostrarDeletados)
+                                            <!-- Botão Restaurar -->
+                                            <button wire:click="restaurar({{ $congregacao->id }})"
+                                                    class="text-green-600 hover:text-green-900 relative group">
+                                                🔄
+                                                <span class="absolute bottom-full mb-2 w-24 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    Restaurar
+                                                </span>
+                                            </button>
+                                        @else
+
+                                            <a href="{{ $congregacao->googlemaps }}" target="_blank"
+                                               class="text-blue-600 hover:text-blue-900 relative group">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                                                    <path fill-rule="evenodd" d="M5.37 2.257a1.25 1.25 0 0 1 1.214-.054l3.378 1.69 2.133-1.313A1.25 1.25 0 0 1 14 3.644v7.326c0 .434-.225.837-.595 1.065l-2.775 1.708a1.25 1.25 0 0 1-1.214.053l-3.378-1.689-2.133 1.313A1.25 1.25 0 0 1 2 12.354V5.029c0-.434.225-.837.595-1.064L5.37 2.257ZM6 4a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 6 4Zm4.75 2.75a.75.75 0 0 0-1.5 0v4.5a.75.75 0 0 0 1.5 0v-4.5Z" clip-rule="evenodd" />
+                                                </svg>
+
+
+                                                <span class="absolute bottom-full mb-2 w-32 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    Ver no Google Maps
+                                                </span>
+                                            </a>
+                                            <a href="{{ route('congregacoes.edit', $congregacao) }}"
+                                               class="text-indigo-600 hover:text-indigo-900 relative group">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                                                    <path d="M13.488 2.513a1.75 1.75 0 0 0-2.475 0L6.75 6.774a2.75 2.75 0 0 0-.596.892l-.848 2.047a.75.75 0 0 0 .98.98l2.047-.848a2.75 2.75 0 0 0 .892-.596l4.261-4.262a1.75 1.75 0 0 0 0-2.474Z" />
+                                                    <path d="M4.75 3.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25V9A.75.75 0 0 1 14 9v2.25A2.75 2.75 0 0 1 11.25 14h-6.5A2.75 2.75 0 0 1 2 11.25v-6.5A2.75 2.75 0 0 1 4.75 2H7a.75.75 0 0 1 0 1.5H4.75Z" />
+                                                </svg>
+
+                                                <span class="absolute bottom-full mb-2 w-24 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    Editar
+                                                </span>
+                                            </a>
+                                            <button wire:click="confirmarDelete({{ $congregacao->id }})"
+                                                    class="text-red-600 hover:text-red-900 relative group">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                                                    <path fill-rule="evenodd" d="M5 3.25V4H2.75a.75.75 0 0 0 0 1.5h.3l.815 8.15A1.5 1.5 0 0 0 5.357 15h5.285a1.5 1.5 0 0 0 1.493-1.35l.815-8.15h.3a.75.75 0 0 0 0-1.5H11v-.75A2.25 2.25 0 0 0 8.75 1h-1.5A2.25 2.25 0 0 0 5 3.25Zm2.25-.75a.75.75 0 0 0-.75.75V4h3v-.75a.75.75 0 0 0-.75-.75h-1.5ZM6.05 6a.75.75 0 0 1 .787.713l.275 5.5a.75.75 0 0 1-1.498.075l-.275-5.5A.75.75 0 0 1 6.05 6Zm3.9 0a.75.75 0 0 1 .712.787l-.275 5.5a.75.75 0 0 1-1.498-.075l.275-5.5a.75.75 0 0 1 .786-.711Z" clip-rule="evenodd" />
+                                                </svg>
+
+                                                <span class="absolute bottom-full mb-2 w-24 bg-gray-900 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    Excluir
+                                                </span>
+                                            </button>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+
+
+                <!-- Paginação Compacta -->
+                <div class="px-2 py-2 bg-gray-50 border-t border-gray-200 dark:border-gray-600 text-sm">
+                    {{ $congregacoes->links('pagination::tailwind') }}
                 </div>
-            </div>
+
+                </div>
         </div>
     </div>
 
