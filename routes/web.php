@@ -19,7 +19,7 @@ Route::middleware([
     // Rotas Congregações com Livewire
     Route::get('/congregacoes', ListaCongregacoes::class)->name('congregacoes.index');
     Route::get('/congregacoes/criar', CriarCongregacao::class)->name('congregacoes.create');
-    Route::get('/congregacoes/{congregacao}/editar', EditarCongregacao::class)->name('congregacoes.edit');
+    Route::get('/congregacoes/{id}/editar', EditarCongregacao::class)->name('congregacoes.edit');
 
 
     Route::resource('oradores', OradorController::class);
